@@ -1,5 +1,7 @@
 package com.shaller.activimq;
 
+import java.util.Date;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -31,8 +33,8 @@ public class JMSProducer {
 			connection = connectionFactory.createConnection();
 			connection.start();// 启动连接
 			session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);// 自动确认
-			destination = session.createQueue("testMq");//创建队列
-			messageProducer = session.createProducer(destination);//创建生产者
+			destination = session.createQueue("testMq");// 创建队列
+			messageProducer = session.createProducer(destination);// 创建生产者
 			sendMessage(session, messageProducer);
 			session.commit();
 		} catch (Exception e) {
@@ -50,17 +52,13 @@ public class JMSProducer {
 	}
 
 	/**
-	 * @Title: sendMessage 
-	 * @Description: TODO(这里用一句话描述这个方法的作用) 
-	 * @param @param session 
-	 * @param @param messageProducer 
-	 * @param @throws JMSException 设定文件
-	 * @param void 返回类型
-	 * @throws
+	 * @Title: sendMessage @Description: TODO(这里用一句话描述这个方法的作用) @param @param
+	 *         session @param @param messageProducer @param @throws JMSException
+	 *         设定文件 @param void 返回类型 @throws
 	 */
 	private static void sendMessage(Session session, MessageProducer messageProducer) throws JMSException {
 		for (int i = 0; i < SENDNUM; i++) {
-			TextMessage message = session.createTextMessage("发送消息:这是第" + i + "条！");
+			TextMessage message = session.createTextMessage("发送消息:这是第" + i + "条！" + new Date());
 			System.out.println(message.getText());
 			messageProducer.send(message);
 		}
